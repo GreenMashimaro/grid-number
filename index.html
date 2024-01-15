@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+      v2.0 | 20110126
+      License: none (public domain)
+    */
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+    }
+
+    /* HTML5 display-role reset for older browsers */
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+      display: block;
+    }
+
+    body {
+      line-height: 1;
+    }
+
+    ol,
+    ul {
+      list-style: none;
+    }
+
+    blockquote,
+    q {
+      quotes: none;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+      content: '';
+      content: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+  </style>
+
+  <style>
+    .tbl td {
+      border: 1px solid black;
+      width: 50px;
+      height: 50px;
+    }
+
+    .tbl td span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <table class="tbl">
+      <tr v-for="i in lineCount">
+        <td v-for="j in lineCount" :style="{ width: `${innerCntrWidth}px`, height: `${innerCntrWidth}px` }">
+          <span>
+            {{ nums[(i - 1) * lineCount + (j - 1)] }}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <script type="module">
+    /** min <= x <= max */
+    function randRange(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+
+    function generateNums(count) {
+      const tempNums = new Array(count).fill(0).map((_, index) => (index + 1))
+      const nums = []
+      // 随机排序
+      while (tempNums.length) {
+        const randomIndex = randRange(0, tempNums.length - 1)
+        const num = tempNums.splice(randomIndex, 1)
+        nums.push(num[0])
+      }
+
+      return nums
+    }
+
+    // 每行数量
+    const lineCount = 10
+    const allCount = lineCount * lineCount
+    // 每个单元格的长宽
+    const innerCntrWidth = 50 - 2
+
+    const nums = generateNums(allCount)
+
+    import { createApp, ref } from './vue.esm-browser.js'
+
+    createApp({
+      setup() {
+        return {
+          lineCount,
+          innerCntrWidth,
+          nums
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+
+</html>
